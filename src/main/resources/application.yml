@@ -1,0 +1,12 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: short-uri
+  datasource:
+    url: jdbc:mysql://i.imyiren.com:3306/short_uri?characterEncoding=UTF-8
+    username: root
+    password: feng1104
+mybatis:
+  mapper-locations: classpath:mappers/*DAO.xml
+  type-aliases-package: com.imyiren.shorturi.entity

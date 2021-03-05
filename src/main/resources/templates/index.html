@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form id="form" onsubmit="return false" action="#" >
+    <label>
+        <input type="text" name="original"/>
+    </label>
+    <input type="submit" onclick="login()" value="提交"/>
+</form>
+<div id="text-container">
+    <a id="text" href=""></a>
+    <input id="copy-text" type="text" hidden>
+    <button id="copy-button" onclick="copyText()">点击复制</button>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script type="text/javascript">
+    const uriAText = $('#text');
+    const copyButton = $('#copy-button');
+    uriAText.hide();
+    copyButton.hide();
+    function login() {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/api/generate",
+            data: $('#form').serialize(),
+            success: function (result) {
+                console.log(result);
+                if (result.code === 200) {
+                    uriAText.text(result.data);
+                    uriAText.attr('href', result.data);
+                    uriAText.show();
+                    copyButton.show();
+                }
+            },
+            error: function () {
+                alert("发生错误，请重试！");
+            }
+        });
+    }
+
+    function copyText() {
+        const text = document.getElementById("text").innerText;
+        const input = document.getElementById("copy-text");
+        input.value = text;
+        input.select();
+        document.execCommand("copy");
+        alert("复制成功");
+    }
+</script>
+</html>
