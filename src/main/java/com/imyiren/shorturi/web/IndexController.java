@@ -30,7 +30,6 @@ public class IndexController {
 
     @GetMapping("/s/{key}")
     public void redirect(@PathVariable String key, HttpServletResponse httpServletResponse) {
-        log.info("key : {}", key);
         try {
             httpServletResponse.sendRedirect(shortUriService.originalUri(key));
         } catch (IOException e) {

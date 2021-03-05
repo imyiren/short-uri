@@ -31,9 +31,6 @@ public class ShortUriController {
             @RequestParam(defaultValue = TEMP) String type,
             HttpServletRequest request
     ) {
-        if (!original.startsWith(ORIGINAL_PREFIX)) {
-            return ResponseResult.error("原始地址格式不正确");
-        }
         if (original.length() > MAX_ORIGINAL_URI_LENGTH) {
             return ResponseResult.error("原始地址字符长度不能大于768");
         }
