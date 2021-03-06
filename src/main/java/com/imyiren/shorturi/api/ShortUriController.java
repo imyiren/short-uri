@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * @author yiren
@@ -31,8 +33,13 @@ public class ShortUriController {
             @RequestParam(defaultValue = TEMP) String type,
             HttpServletRequest request
     ) {
+        try {
+            new URI(original);
+        } catch (URISyntaxException e) {
+            return ResponseResult.error("URI语法错误，请改正后重试！");
+        }
         if (original.length() > MAX_ORIGINAL_URI_LENGTH) {
-            return ResponseResult.error("原始地址字符长度不能大于768");
+            return ResponseResult.error("原始URI字符长度不能大于768");
         }
         String contextPath = request.getScheme() + "://" + request.getServerName() + ":" + (80 == request.getServerPort() ? "" : request.getServerPort()) + request.getContextPath();
         PersistenceTypeEnum persistenceTypeEnum;
