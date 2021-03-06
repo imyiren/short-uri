@@ -4,7 +4,7 @@ spring:
   application:
     name: short-uri
   datasource:
-    url: jdbc:mysql://i.imyiren.com:3306/short_uri?characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/short_uri?characterEncoding=UTF-8
     username: root
     password: feng1104
 mybatis:

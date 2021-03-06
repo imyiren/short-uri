@@ -7,13 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<form id="form" onsubmit="return false" action="#" >
-    <label>
-        <input type="text" name="original"/>
-    </label>
-    <input type="submit" onclick="login()" value="提交"/>
+<form  id="form" onsubmit="return false" action="#" class="form-inline text-center">
+    <div class="form-group" style="width: 68%;">
+        <div class="input-group">
+            <input id="original" type="text" class="form-control" placeholder="原始地址" name="original" style="width: auto;"/>
+        </div>
+    </div>
+    <button type="submit" onclick="login()" class="btn btn-info"  style="width: 20%;">转换</button>
 </form>
 <div id="text-container">
     <a id="text" href=""></a>
