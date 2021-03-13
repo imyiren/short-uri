@@ -2,35 +2,37 @@
 <html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>以芢工具 - URI短短链生成</title>
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>-->
 </head>
 <body>
-<form  id="form" onsubmit="return false" action="#" class="form-inline text-center">
-    <div class="form-group" style="width: 68%;">
-        <div class="input-group">
-            <input id="original" type="text" class="form-control" placeholder="原始地址" name="original" style="width: auto;"/>
-        </div>
+<div id="app">
+    <div class="title">短链生成器</div>
+    <form id="form" onsubmit="return false" action="#" class="form-inline text-center">
+      <span id="head_wrapper">
+        <input id="original" type="text" class="form-control" placeholder="原始地址" name="original"/>
+      </span>
+        <span>
+        <input type="submit" onclick="transfer()" class="btn btn-info" value="转换"/>
+      </span>
+    </form>
+    <div id="text-container">
+        <a id="short-uri" class="short-uri" href="#" target="_blank"></a>
+        <input class="btn-copy" id="click-copy" data-clipboard-action="copy" data-clipboard-target="#short-uri" type="button" value="点击复制">
     </div>
-    <button type="submit" onclick="login()" class="btn btn-info"  style="width: 20%;">转换</button>
-</form>
-<div id="text-container">
-    <a id="text" href="#" target="_blank"></a>
-    <input id="copy-text" type="text" hidden>
-    <button id="copy-button" onclick="copyText()">点击复制</button>
 </div>
 </body>
 <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/clipboard.min.js}"></script>
 <script type="text/javascript">
-    const uriAText = $('#text');
-    const copyButton = $('#copy-button');
+    const uriAText = $('#short-uri');
+    const copyButton = $('#click-copy');
     uriAText.hide();
     copyButton.hide();
-    function login() {
+    function transfer() {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -50,14 +52,19 @@
             }
         });
     }
+    const clip = new ClipboardJS('#click-copy', {
+        text: function() {
+            return uriAText.text();
+        }
+    });
 
-    function copyText() {
-        const text = document.getElementById("text").innerText;
-        const input = document.getElementById("copy-text");
-        input.value = text;
-        input.select();
-        document.execCommand("copy");
-        alert("复制成功");
-    }
+    clip.on('success', function(e) {
+        alert("复制成功！")
+    });
+
+    clip.on('error', function (e) {
+        console.log("复制失败！");
+    });
+
 </script>
 </html>
