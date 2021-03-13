@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 @Service
 public class ShortUriServiceImpl implements ShortUriService {
 
-    private static final String PREFIX = "";
+    private static final String PREFIX = "/";
     private static final Pattern URI_PATTERN_ONE = Pattern.compile("^[A-Za-z]+://.+$");
     private static final Pattern URI_PATTERN_TWO = Pattern.compile("^[A-Za-z]+:.+$");
 
@@ -33,7 +33,7 @@ public class ShortUriServiceImpl implements ShortUriService {
         if (!URI_PATTERN_ONE.matcher(originalUri).matches() && !URI_PATTERN_TWO.matcher(originalUri).matches()) {
             originalUri = "http://" + originalUri;
         }
-        if (originalUri.endsWith("/")) {
+        if (originalUri.endsWith("/") || originalUri.endsWith("#")) {
             originalUri = originalUri.substring(0, originalUri.length() - 1);
         }
         final String uri = originalUri;
