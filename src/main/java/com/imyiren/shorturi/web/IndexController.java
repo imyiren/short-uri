@@ -37,4 +37,13 @@ public class IndexController {
         }
     }
 
+    @GetMapping("/{key}")
+    public void redirect2(@PathVariable String key, HttpServletResponse httpServletResponse) {
+        try {
+            httpServletResponse.sendRedirect(shortUriService.originalUri(key));
+        } catch (IOException e) {
+            log.warn("重定向失败", e);
+        }
+    }
+
 }

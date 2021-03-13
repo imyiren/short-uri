@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * @author yiren
@@ -19,18 +20,29 @@ import java.util.Optional;
 @Service
 public class ShortUriServiceImpl implements ShortUriService {
 
-    private static final String PREFIX = "/s/";
+    private static final String PREFIX = "";
+    private static final Pattern URI_PATTERN_ONE = Pattern.compile("^[A-Za-z]+://.+$");
+    private static final Pattern URI_PATTERN_TWO = Pattern.compile("^[A-Za-z]+:.+$");
+
+
     @Resource
     private ShortUriDAO shortUriDAO;
 
     @Override
     public String shortUri(String originalUri, PersistenceTypeEnum type) {
+        if (!URI_PATTERN_ONE.matcher(originalUri).matches() && !URI_PATTERN_TWO.matcher(originalUri).matches()) {
+            originalUri = "http://" + originalUri;
+        }
+        if (originalUri.endsWith("/")) {
+            originalUri = originalUri.substring(0, originalUri.length() - 1);
+        }
+        final String uri = originalUri;
         String to62radix = Optional.ofNullable(shortUriDAO.selectByOriginalUri(originalUri))
                 .map(ShortUriDO::getId)
                 .map(RadixUtil::to62RadixString)
                 .orElseGet(() -> {
                     ShortUriDO newShortUriDO = new ShortUriDO();
-                    newShortUriDO.setOriginalUri(originalUri);
+                    newShortUriDO.setOriginalUri(uri);
                     newShortUriDO.setPersistence(type.toString());
                     if (PersistenceTypeEnum.TEMP.equals(type)) {
                         newShortUriDO.setExpireTime(LocalDateTime.now().plusDays(30));
@@ -53,4 +65,10 @@ public class ShortUriServiceImpl implements ShortUriService {
         return shortUriDO.getOriginalUri();
     }
 
+    public static void main(String[] args) {
+        System.out.println(URI_PATTERN_ONE.matcher("http://baidu.com").matches());
+        System.out.println(URI_PATTERN_ONE.matcher("baidu.com").matches());
+        System.out.println(URI_PATTERN_TWO.matcher("mailto:yiren.dev@gmail.com").matches());
+        System.out.println(URI_PATTERN_TWO.matcher("yiren.dev@gmail.com").matches());
+    }
 }

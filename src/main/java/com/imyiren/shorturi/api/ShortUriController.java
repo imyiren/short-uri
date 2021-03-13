@@ -41,7 +41,7 @@ public class ShortUriController {
         if (original.length() > MAX_ORIGINAL_URI_LENGTH) {
             return ResponseResult.error("原始URI字符长度不能大于768");
         }
-        String contextPath = request.getScheme() + "://" + request.getServerName() + (80 == request.getServerPort() ? "" : ":" + request.getServerPort()) + request.getContextPath();
+        String contextPath = request.getScheme() + "://" + request.getServerName() + (80 == request.getServerPort() || 443 == request.getServerPort() ? "" : ":" + request.getServerPort()) + request.getContextPath();
         PersistenceTypeEnum persistenceTypeEnum;
         try {
             persistenceTypeEnum = PersistenceTypeEnum.valueOf(type);
