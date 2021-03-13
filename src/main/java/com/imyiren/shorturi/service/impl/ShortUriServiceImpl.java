@@ -65,10 +65,4 @@ public class ShortUriServiceImpl implements ShortUriService {
         return shortUriDO.getOriginalUri();
     }
 
-    public static void main(String[] args) {
-        System.out.println(URI_PATTERN_ONE.matcher("http://baidu.com").matches());
-        System.out.println(URI_PATTERN_ONE.matcher("baidu.com").matches());
-        System.out.println(URI_PATTERN_TWO.matcher("mailto:yiren.dev@gmail.com").matches());
-        System.out.println(URI_PATTERN_TWO.matcher("yiren.dev@gmail.com").matches());
-    }
 }
